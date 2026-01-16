@@ -12,6 +12,10 @@ Physics::Physics(double step) {
 	this->step = step;
 }
 
+sf::Vector2f Physics::scale(sf::Vector2f vec, double scalar) {
+	return sf::Vector2f(vec.x * scalar, vec.y * scalar);
+}
+
 void Physics::apply_velocity(std::vector<Body>& bodies) {
 	for (Body& b : bodies) {
 		b.position -= b.velocity;
@@ -19,6 +23,49 @@ void Physics::apply_velocity(std::vector<Body>& bodies) {
 		b.shape.setPosition(b.position);
 	}
 }
+
+double Physics::distance(sf::Vector2f a, sf::Vector2f b) {
+	double x_comp = (b.x - a.x) * (b.x - a.x);
+	double y_comp = (b.y - a.y) * (b.y - a.y);
+
+	return (sqrt(x_comp + y_comp));
+}
+
+double Physics::normalize(double n) {
+	if (n > 0)
+		return 1;
+	else if (n < 0)
+		return -1;
+	else
+		return 0;
+}
+
+sf::Vector2f Physics::dir(sf::Vector2f a, sf::Vector2f b) {
+	double x_comp = normalize(b.x - a.x);
+	double y_comp = normalize(b.y - a.y);
+
+	return sf::Vector2f(x_comp, y_comp);
+}
+
+void Physics::apply_gravity(std::vector<Body>& bodies) {
+
+	for (Body& b : bodies) {
+		Body& curr = b;
+		for (Body& b2 : bodies) {
+			if (&b != &b2) {
+				double dist = distance(b.position, b2.position);
+				this->accel.x = (dir(b.position, b2.position).x * this->G * b2.mass) / ((dist * dist) + softening_factor); 
+				this->accel.y = (dir(b.position, b2.position).y * this->G * b2.mass) / ((dist * dist) + softening_factor);
+				
+				b.velocity += scale(this->accel, this->step);
+				b.position += scale(b.velocity, this->step);
+
+				b.shape.setPosition(b.position);
+			}
+		}
+	}
+}
+
 
 void Physics::apply_arcade_gravity(std::vector<Body>& bodies, int ground) {
 	double accel;
@@ -31,7 +78,7 @@ void Physics::apply_arcade_gravity(std::vector<Body>& bodies, int ground) {
 			b.shape.setPosition(b.position);
 		}
 		else {
-			b.velocity.y == 0;
+			b.velocity.y = 0;
 		}
 		std::cout << b.position.y << std::endl;
 	}
