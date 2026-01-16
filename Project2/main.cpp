@@ -46,12 +46,6 @@ int main() {
 
 	spawn(bodies, 10);
 
-	/*
-	 NEXT: do two bodies, apply gravity logic in the physics class, 
-	 use nested for loops for now, 
-	- okay bruh
-	*/ 
-
 	while (window.isOpen())
 	{
 		while (const std::optional event = window.pollEvent())
