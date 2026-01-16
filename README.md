@@ -21,3 +21,8 @@ I am moving away from high-level engines like **Godot** to understand the "essen
 
 ### 3 body simulation
 ![0116(1)](https://github.com/user-attachments/assets/1ae697a3-1459-448f-8aa7-862446f820e0)
+
+
+### Randomized n body simulation
+![0116 (1)(1)](https://github.com/user-attachments/assets/3b5c1e7c-b639-4d4c-9a29-3ceffb5a61e1)
+
