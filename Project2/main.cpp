@@ -21,14 +21,14 @@ void spawn(std::vector<Body>& bodies, int amount) {
 	sf::Color color = sf::Color::White;
 	for (int i = 0; i < amount; i++)
 	{
-		radius = random_range(3.0, 5.0);
-		mass = random_range(70.0, 200.0);
+		radius = random_range(3.0, 7.0);
+		mass = random_range(70.0, 800.0);
 
 		position.x = random_range(-0, 800.0);
 		position.y = random_range(-0, 800.0);
 
-		velocity.x = random_range(-0.2, 0.2);
-		velocity.x = random_range(-0.2, 0.2);
+		velocity.x = random_range(-50, 50);
+		velocity.y = random_range(-50, 50);
 
 		Body new_body(radius, mass, position, velocity, color);
 

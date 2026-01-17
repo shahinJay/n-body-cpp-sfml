@@ -10,7 +10,7 @@ class Physics {
 public:
 	const double G = 6e4;
 	double step;
-	double softening_factor = 0.0001;
+	double softening_factor = 0.0005;
 	sf::Vector2f accel;
 
 

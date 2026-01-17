@@ -52,7 +52,8 @@ void Physics::apply_gravity(std::vector<Body>& bodies) {
 	for (Body& b : bodies) {
 		Body& curr = b;
 		for (Body& b2 : bodies) {
-			if (&b != &b2) {
+			if (&b != &b2 && distance(b.position, b2.position) > b2.radius + 1.0) {
+
 				double dist = distance(b.position, b2.position);
 				this->accel.x = (dir(b.position, b2.position).x * this->G * b2.mass) / ((dist * dist) + softening_factor); 
 				this->accel.y = (dir(b.position, b2.position).y * this->G * b2.mass) / ((dist * dist) + softening_factor);
