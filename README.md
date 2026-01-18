@@ -25,7 +25,10 @@ I am moving away from high-level engines like **Godot** to understand the "essen
 ### 3 body simulation
 ![0116(1)](https://github.com/user-attachments/assets/1ae697a3-1459-448f-8aa7-862446f820e0)
 
+### Randomized n body Simulation
+![0118(1)](https://github.com/user-attachments/assets/90681d78-ca19-4fab-b106-0897138090f8)
 
-### Randomized n body simulation
-![0116 (1)(1)](https://github.com/user-attachments/assets/3b5c1e7c-b639-4d4c-9a29-3ceffb5a61e1)
+### Solar System Simulation with Elastic Collisions
+![0118](https://github.com/user-attachments/assets/bba48145-292d-40de-ae25-71e46dac87ac)
+
 
