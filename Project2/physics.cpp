@@ -47,6 +47,13 @@ sf::Vector2f Physics::dir(sf::Vector2f a, sf::Vector2f b) {
 	return sf::Vector2f(x_comp, y_comp);
 }
 
+bool Physics::collision(double dist, double a_rad, double b_rad) {
+	if (dist < a_rad + b_rad)
+		return true;
+	else
+		return false;
+}
+
 void Physics::apply_gravity(std::vector<Body>& bodies) {
 
 	for (Body& b : bodies) {
@@ -55,15 +62,21 @@ void Physics::apply_gravity(std::vector<Body>& bodies) {
 			if (&b != &b2 && distance(b.position, b2.position) > b2.radius + 1.0) {
 
 				double dist = distance(b.position, b2.position);
+
+				if (collision(dist, b.radius, b2.radius)) {
+					sf::Vector2f temp = b.velocity;
+					b.velocity = b2.velocity;
+					b2.velocity = temp;
+				}
+
 				this->accel.x = (dir(b.position, b2.position).x * this->G * b2.mass) / ((dist * dist) + softening_factor); 
 				this->accel.y = (dir(b.position, b2.position).y * this->G * b2.mass) / ((dist * dist) + softening_factor);
-				
+
 				b.velocity += scale(this->accel, this->step);
 				b.position += scale(b.velocity, this->step);
-
-				b.shape.setPosition(b.position);
 			}
 		}
+		b.shape.setPosition(b.position);
 	}
 }
 

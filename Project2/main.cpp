@@ -17,18 +17,21 @@ double random_range(double lower, double upper) {
 
 void spawn(std::vector<Body>& bodies, int amount) {
 	double radius, mass;
+	double radius_scale_factor = 20;
+	double velocity_range = 10;
 	sf::Vector2f position, velocity;
 	sf::Color color = sf::Color::White;
 	for (int i = 0; i < amount; i++)
 	{
-		radius = random_range(3.0, 7.0);
-		mass = random_range(70.0, 800.0);
+		double size = random_range(3.0, 8.0);
+		radius = size;
+		mass = size * radius_scale_factor;
 
 		position.x = random_range(-0, 800.0);
 		position.y = random_range(-0, 800.0);
 
-		velocity.x = random_range(-50, 50);
-		velocity.y = random_range(-50, 50);
+		velocity.x = random_range(-velocity_range, velocity_range);
+		velocity.y = random_range(-velocity_range, velocity_range);
 
 		Body new_body(radius, mass, position, velocity, color);
 

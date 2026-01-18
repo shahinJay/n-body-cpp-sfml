@@ -8,7 +8,7 @@
 
 class Physics {
 public:
-	const double G = 6e4;
+	const double G = 6e3;
 	double step;
 	double softening_factor = 0.0005;
 	sf::Vector2f accel;
@@ -25,6 +25,8 @@ public:
 	double normalize(double n);
 
 	sf::Vector2f dir(sf::Vector2f a, sf::Vector2f b);
+
+	bool collision(double dist, double a_rad, double b_rad);
 
 	void apply_gravity(std::vector<Body>& bodies);
 
