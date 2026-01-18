@@ -16,6 +16,26 @@ sf::Vector2f Physics::scale(sf::Vector2f vec, double scalar) {
 	return sf::Vector2f(vec.x * scalar, vec.y * scalar);
 }
 
+double Physics::distance(sf::Vector2f a, sf::Vector2f b) {
+	double x_comp = (b.x - a.x) * (b.x - a.x);
+	double y_comp = (b.y - a.y) * (b.y - a.y);
+
+	return (sqrt(x_comp + y_comp));
+}
+
+sf::Vector2f Physics::dir(sf::Vector2f a, sf::Vector2f b) {
+	double dist = distance(a, b);
+
+	if (dist == 0)
+		return sf::Vector2f(0, 0);
+
+	return sf::Vector2f((b.x - a.x) / dist, (b.y - a.y) / dist);
+}
+
+double Physics::length(sf::Vector2f vec) {
+	return sqrt((vec.x * vec.x) + (vec.y * vec.y));
+}
+
 void Physics::apply_velocity(std::vector<Body>& bodies) {
 	for (Body& b : bodies) {
 		b.position -= b.velocity;
@@ -24,27 +44,9 @@ void Physics::apply_velocity(std::vector<Body>& bodies) {
 	}
 }
 
-double Physics::distance(sf::Vector2f a, sf::Vector2f b) {
-	double x_comp = (b.x - a.x) * (b.x - a.x);
-	double y_comp = (b.y - a.y) * (b.y - a.y);
-
-	return (sqrt(x_comp + y_comp));
-}
-
-double Physics::normalize(double n) {
-	if (n > 0)
-		return 1;
-	else if (n < 0)
-		return -1;
-	else
-		return 0;
-}
-
-sf::Vector2f Physics::dir(sf::Vector2f a, sf::Vector2f b) {
-	double x_comp = normalize(b.x - a.x);
-	double y_comp = normalize(b.y - a.y);
-
-	return sf::Vector2f(x_comp, y_comp);
+sf::Vector2f Physics::apply_circular_velocity(sf::Vector2f center, double central_mass, sf::Vector2f pos) {
+	sf::Vector2f direction = sf::Vector2f(dir(center, pos));
+	return sf::Vector2f(-direction.y * sqrt(G * central_mass / distance(center, pos)), direction.x * sqrt(G * central_mass / distance(center, pos)));
 }
 
 bool Physics::collision(double dist, double a_rad, double b_rad) {
@@ -54,7 +56,7 @@ bool Physics::collision(double dist, double a_rad, double b_rad) {
 		return false;
 }
 
-void Physics::apply_gravity(std::vector<Body>& bodies) {
+void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary) {
 
 	for (Body& b : bodies) {
 		Body& curr = b;
@@ -68,14 +70,23 @@ void Physics::apply_gravity(std::vector<Body>& bodies) {
 					b.velocity = b2.velocity;
 					b2.velocity = temp;
 				}
-
+				
 				this->accel.x = (dir(b.position, b2.position).x * this->G * b2.mass) / ((dist * dist) + softening_factor); 
 				this->accel.y = (dir(b.position, b2.position).y * this->G * b2.mass) / ((dist * dist) + softening_factor);
 
 				b.velocity += scale(this->accel, this->step);
-				b.position += scale(b.velocity, this->step);
 			}
 		}
+
+		if (apply_boundary) {
+			if (b.position.x - b.radius < 0 || b.position.x + b.radius > 800) {
+				b.velocity.x *= -1 / 1.1;
+			}
+			else if (b.position.y - b.radius < 0 || b.position.y + b.radius > 800) {
+				b.velocity.y *= -1 / 1.1;
+			}
+		}
+		b.position += scale(b.velocity, this->step);
 		b.shape.setPosition(b.position);
 	}
 }
