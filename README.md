@@ -5,8 +5,8 @@
 ---
 
 ### Goals
-- [x] **Logic Prototype:** Functional 1D console sim with gravity classes.
-- [ ] **2D Rendering:** Migrating to SFML for real-time visualization.
+- ✅ **Logic Prototype:** Functional 1D console sim with gravity classes.
+- ✅ **2D Rendering:** Migrating to SFML for real-time visualization.
 - [ ] **Optimization:** Optimizing to handle a reasonably large number of particles.
 
 ### Tech Stack
