@@ -3,12 +3,12 @@
 > **Transitioning a custom physics engine from CLI to 2D Graphics.**
 
 ---
-
 ### Goals
 - ✅ **Logic Prototype:** Functional 1D console sim with gravity classes.
 - ✅ **2D Rendering:** Migrating to SFML for real-time visualization.
-- [ ] **Optimization:** Optimizing to handle a reasonably large number of particles.
+- ☐ **Optimization:** Optimizing to handle a reasonably large number of particles.
 
+---
 ### Tech Stack
 * **Language:** C++20 (Core Logic)
 * **Graphics:** SFML (Rendering & Windowing)
