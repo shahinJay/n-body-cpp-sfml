@@ -24,12 +24,18 @@
     <ClCompile Include="body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="quadtree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="body.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quadtree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

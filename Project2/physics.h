@@ -8,9 +8,11 @@
 
 class Physics {
 public:
-	const double G = 6e4;
+	const double G = 6e-3;
+
 	double step;
 	double softening_factor = 0.0005;
+
 	sf::Vector2f accel;
 
 
@@ -30,7 +32,7 @@ public:
 	
 	bool collision(double dist, double a_rad, double b_rad);
 
-	void apply_gravity(std::vector<Body>& bodies, bool apply_boundary);
+	void apply_gravity(std::vector<Body>& bodies, bool apply_boundary, double delta);
 
 	void apply_arcade_gravity(std::vector<Body>& bodies, int ground);
 };

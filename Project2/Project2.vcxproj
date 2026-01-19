@@ -142,10 +142,12 @@
     <ClCompile Include="body.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
+    <ClCompile Include="quadtree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="body.h" />
     <ClInclude Include="physics.h" />
+    <ClInclude Include="quadtree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

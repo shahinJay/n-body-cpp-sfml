@@ -2,6 +2,7 @@
 #include <math.h>
 #include <SFML/graphics.hpp>
 #include <vector>
+#include <time.h>
 
 #include "body.h"
 #include "physics.h"
@@ -56,9 +57,11 @@ bool Physics::collision(double dist, double a_rad, double b_rad) {
 		return false;
 }
 
-void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary) {
+void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary, double delta) {
+	
 
 	for (Body& b : bodies) {
+
 		Body& curr = b;
 		for (Body& b2 : bodies) {
 			if (&b != &b2 && distance(b.position, b2.position) > b2.radius + 1.0) {
@@ -74,7 +77,7 @@ void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary) {
 				this->accel.x = (dir(b.position, b2.position).x * this->G * b2.mass) / ((dist * dist) + softening_factor); 
 				this->accel.y = (dir(b.position, b2.position).y * this->G * b2.mass) / ((dist * dist) + softening_factor);
 
-				b.velocity += scale(this->accel, this->step);
+				b.velocity += scale(this->accel, delta); //velocity update
 			}
 		}
 
@@ -86,9 +89,12 @@ void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary) {
 				b.velocity.y *= -1 / 1.1;
 			}
 		}
-		b.position += scale(b.velocity, this->step);
+		b.position += scale(b.velocity, delta); //position update
 		b.shape.setPosition(b.position);
+
+
 	}
+	
 }
 
 
