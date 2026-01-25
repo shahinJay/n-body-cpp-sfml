@@ -12,7 +12,8 @@
 class Node {
 
 	public:
-		Node();
+		Node(sf::Vector2f position, double hw, sf::Vector2f c_o_m, double mass);
+	
 		double half_width;
 
 		sf::Vector2f position;
@@ -20,7 +21,7 @@ class Node {
 
 		int contains = 0;
 		int max_bodies = 1;
-		
+
 		Body* self_body = nullptr;
 
 		double mass;
@@ -28,15 +29,15 @@ class Node {
 		bool is_leaf = true;
 
 
-		Node *ne = nullptr;
-		Node *nw = nullptr;
-		Node *se = nullptr;
-		Node *sw = nullptr;
+		Node* ne = nullptr;
+		Node* nw = nullptr;
+		Node* se = nullptr;
+		Node* sw = nullptr;
 
 
 
 	bool within_bounds(sf::Vector2f position);
-	void split_and_insert(Body& body, sf::Vector2f position, double mass);
+	void split_and_insert(Body& body);
 
 	void insert(Body& body);
 

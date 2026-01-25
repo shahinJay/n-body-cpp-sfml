@@ -10,11 +10,12 @@
 #include "physics.h"
 #include "quadtree.h"
 
-Node::Node() {
-	this->half_width = 400;
-	this->position = sf::Vector2f(0, 0);
-	this->c_o_m = sf::Vector2f(400.f, 400.f);
-	this->mass = 0;
+Node::Node(sf::Vector2f position, double hw, sf::Vector2f c_o_m, double mass) {
+	this->position = position;
+	this->half_width = hw;
+	
+	this->c_o_m = c_o_m;
+	this->mass = mass;
 }
 
 bool Node::within_bounds(sf::Vector2f position) {
@@ -24,8 +25,12 @@ bool Node::within_bounds(sf::Vector2f position) {
 		return false;
 }
 
-void Node::split_and_insert(Body& body, sf::Vector2f position, double mass) {
-	//within bounds
+void Node::split_and_insert(Body& body) {
+	
+	this->is_leaf = false;
+
+	sf::Vector2f position = body.position;
+	double mass = body.mass;
 	double pos_x = this->position.x;
 	double pos_y = this->position.y;
 	double new_hw = this->half_width / 2;
@@ -49,22 +54,14 @@ void Node::split_and_insert(Body& body, sf::Vector2f position, double mass) {
 			// north - west
 			if (position.x < mid_x) {
 				if (this->nw == nullptr)
-					this->nw = new Node(); //create node object
+					this->nw = new Node(nw_pos, new_hw, c_o_m, mass); //create node object
 				this->nw->insert(body); //insert body into node object
-				this->half_width = new_hw;
-				this->position = position;
-				this->c_o_m = position;// !_!_!_!_!_!_!_!_!_!_!_!_
-				this->mass = mass;
 				this->nw->self_body = &body; //define contained body
 			}
 			// north - east
 			else {
 				if (this->ne == nullptr)
-					this->ne = new Node(); //create node object
-				this->half_width = new_hw;
-				this->position = position;
-				this->c_o_m = position;// !_!_!_!_!_!_!_!_!_!_!_!_
-				this->mass = mass;
+					this->ne = new Node(ne_pos, new_hw, c_o_m, mass); //create node object
 				this->ne->insert(body); //insert body into node object
 				this->ne->self_body = &body; //define contained body
 				
@@ -76,22 +73,14 @@ void Node::split_and_insert(Body& body, sf::Vector2f position, double mass) {
 			// south - west
 			if (position.x < mid_x) {
 				if (this->sw == nullptr)
-					this->sw = new Node(); //create node object
-				this->half_width = new_hw;
-				this->position = position;
-				this->c_o_m = position;// !_!_!_!_!_!_!_!_!_!_!_!_
-				this->mass = mass;
+					this->sw = new Node(sw_pos, new_hw, c_o_m, mass); //create node object
 				this->sw->insert(body); //insert body into node object
 				this->sw->self_body = &body; //define contained body
 			}
 			// south - east
 			else {
 				if (this->se == nullptr)
-					this->se = new Node(); //creat node object
-				this->half_width = new_hw;
-				this->position = position;
-				this->c_o_m = position; // !_!_!_!_!_!_!_!_!_!_!_!_
-				this->mass = mass;
+					this->se = new Node(se_pos, new_hw, c_o_m, mass); //creat node object
 				this->se->insert(body); //insert body into node object
 				this->se->self_body = &body; //define contained body
 			}
@@ -101,17 +90,25 @@ void Node::split_and_insert(Body& body, sf::Vector2f position, double mass) {
 
 
 void Node::insert(Body& body) {
-	if (!this->is_leaf) { // not a leaf
-		//pass
+	double total_m = this->mass + body.mass;
+
+	//fix vector multiplication
+
+	this->c_o_m = ((this->c_o_m * this->position * (float)this->mass ) + (body.position * (float)body.mass)) / total_m;
+	
+	if (this->is_leaf && this->contains==0) {//is leaf and is empty
+		this->is_leaf = false;
+		split_and_insert(body);
+		
 	}
-	else if (this->is_leaf && this->contains == 0) { // is leaf and is empty
-		this->self_body = &body;
-		this->contains += 1;
+	else if (is_leaf && this->contains == 1) {//is leaf and is NOT empty
+		this->is_leaf = false;
+		split_and_insert(*this->self_body);
+		split_and_insert(body);
+		this->contains = 0;
 	}
-	else if (this->is_leaf && this->contains > 0) { // is leaf and is full
-		split_and_insert(*this->self_body, this->self_body->position, this->self_body->mass);
-		split_and_insert(body, body.position, body.mass);
-		this->contains -= 1;
+	else{
+		split_and_insert(body);
 	}
 }
 

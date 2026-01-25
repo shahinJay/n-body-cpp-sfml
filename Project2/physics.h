@@ -36,9 +36,11 @@ public:
 	
 	bool collision(double dist, double a_rad, double b_rad);
 
-	void apply_gravity(std::vector<Body>& bodies, bool apply_boundary, double delta);
+	void apply_brute_force_gravity(std::vector<Body>& bodies, bool apply_boundary, double delta);
 	
-	void init_barnes_hut(std::vector<Body>& bodies);
+	void apply_gravity(Body& b, sf::Vector2f b2pos, double mass, double dist, double delta);
+
+	void traverse_quadtree(Body& b, Node& curr, double delta);
 
 	void apply_barnes_hut(std::vector<Body>& bodies, double delta);
 

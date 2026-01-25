@@ -112,7 +112,7 @@ int main() {
 		}
 
 		window.clear(sf::Color::Black);
-		phy.apply_gravity(bodies, false, delta);
+		phy.apply_barnes_hut(bodies, delta);
 
 		for (Body& b : bodies)
 			window.draw(b.shape);
