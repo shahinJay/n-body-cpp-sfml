@@ -17,11 +17,11 @@ double random_range(double lower, double upper) {
 
 void spawn_random(std::vector<Body>& bodies, int amount) {
 	double radius, mass;
-	double mass_range_lower = 250.0;
-	double mass_range_upper = 900.0;
-	double radius_scale_factor = 50; // lower = bigger in scale
-	double velocity_range = 5;
-	sf::Vector2f position, velocity;
+	double mass_range_lower = 2e2;
+	double mass_range_upper = 3e3;
+	double radius_scale_factor = 1e-2; // lower = bigger in scale
+	double velocity_range = 10;
+	sf::Vector2f position, velocity;//fix this
 	sf::Color color = sf::Color::White;
 	for (int i = 0; i < amount; i++)
 	{
@@ -90,7 +90,6 @@ void spawn_solar_system(Physics& phy, std::vector<Body>& bodies, int planets) {
 
 
 int main() {
-	
 	sf::RenderWindow window(sf::VideoMode({ 800,800 }), "my window");
 	sf::Clock deltaclock;
 	double delta = 0.001;
@@ -98,8 +97,8 @@ int main() {
 	Physics phy(0.00002);
 	std::vector<Body> bodies;
 
-	//spawn_random(bodies, 8);
-	spawn_solar_system(phy, bodies, 15);
+	//spawn_random(bodies, 10);
+	spawn_solar_system(phy, bodies, 50);
 
 	while (window.isOpen())
 	{

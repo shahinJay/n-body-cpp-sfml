@@ -6,6 +6,7 @@
 
 #include "body.h"
 #include "physics.h"
+#include "quadtree.h"
 
 //PHYSICS CLASS IMPLEMENTATION
 
@@ -58,10 +59,8 @@ bool Physics::collision(double dist, double a_rad, double b_rad) {
 }
 
 void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary, double delta) {
-	
 
 	for (Body& b : bodies) {
-
 		Body& curr = b;
 		for (Body& b2 : bodies) {
 			if (&b != &b2 && distance(b.position, b2.position) > b2.radius + 1.0) {
@@ -94,9 +93,19 @@ void Physics::apply_gravity(std::vector<Body>& bodies, bool apply_boundary, doub
 
 
 	}
-	
 }
 
+void Physics::init_barnes_hut(std::vector<Body>& bodies) {
+	this->quad_root = new Node();
+}
+
+void Physics::apply_barnes_hut(std::vector<Body>& bodies, double delta) {
+	// for each body 
+	// put it into the tree
+	// traverse tree again and check for distances 
+	// if far enough
+	// use c_o_m as bigger quad center or something
+}
 
 void Physics::apply_arcade_gravity(std::vector<Body>& bodies, int ground) {
 	double accel;

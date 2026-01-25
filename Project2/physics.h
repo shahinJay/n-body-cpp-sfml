@@ -4,6 +4,9 @@
 #include <vector>
 #include <SFML/graphics.hpp>
 
+#include "body.h"
+#include "quadtree.h"
+
 //PHYSICS CLASS DECLARATION
 
 class Physics {
@@ -15,6 +18,7 @@ public:
 
 	sf::Vector2f accel;
 
+	Node* quad_root = nullptr;
 
 	Physics(double step);
 
@@ -33,6 +37,10 @@ public:
 	bool collision(double dist, double a_rad, double b_rad);
 
 	void apply_gravity(std::vector<Body>& bodies, bool apply_boundary, double delta);
+	
+	void init_barnes_hut(std::vector<Body>& bodies);
+
+	void apply_barnes_hut(std::vector<Body>& bodies, double delta);
 
 	void apply_arcade_gravity(std::vector<Body>& bodies, int ground);
 };

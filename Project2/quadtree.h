@@ -9,31 +9,36 @@
 #include "body.h"
 #include "physics.h"
 
-class quadtree {
+class Node {
 
-	struct node {
+	public:
+		Node();
 		double half_width;
-		sf::Vector2f centre;
+
+		sf::Vector2f position;
 		sf::Vector2f c_o_m;
 
-		struct node* ne;
-		struct node* nw;
-		struct node* se;
-		struct node* sw;
+		int contains = 0;
+		int max_bodies = 1;
+		
+		Body* self_body = nullptr;
 
 		double mass;
-	};
 
-	void insert(std::vector<Body>& bodies) {
-		//for each body
-		//check for underflow
-		//if not, check root
-		//if root not empty, 
-		// temp = root.body, 
-		// make 4 new nodes , assign bodies, and link correctly to the right region,
-		//if root is empty, 
-		//create a node and put the curr body there
+		bool is_leaf = true;
 
-	}
 
+		Node *ne = nullptr;
+		Node *nw = nullptr;
+		Node *se = nullptr;
+		Node *sw = nullptr;
+
+
+
+	bool within_bounds(sf::Vector2f position);
+	void split_and_insert(Body& body, sf::Vector2f position, double mass);
+
+	void insert(Body& body);
+
+	~Node();
 };
