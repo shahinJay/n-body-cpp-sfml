@@ -4,7 +4,7 @@
 > **Using Barnes-Hut Algortithm and Quadtree data structures for optimization**
 
 ---
-# ✅✅✅ Successfully managed to simulate 8000 particles at 60 fps in 10 days of learning c++ and simulation engineering
+### ✅✅✅ Successfully managed to simulate 8000 particles at 60 fps in 10 days of learning c++ and simulation engineering
 ---
 
 ### Goals
