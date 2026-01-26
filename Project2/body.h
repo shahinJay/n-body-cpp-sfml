@@ -13,4 +13,5 @@ class Body {
 
 	Body(double radius, double mass, sf::Vector2f position, sf::Vector2f velocity, sf::Color color);
 
+	void set_position(sf::Vector2f new_pos);
 };

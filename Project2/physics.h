@@ -11,16 +11,16 @@
 
 class Physics {
 public:
-	const double G = 6e-3;
-
+	sf::Vector2u resolution;
+	const double G = 6e-12;
+	double softening_factor = 0.005;
 	double step;
-	double softening_factor = 0.0005;
-
 	sf::Vector2f accel;
 
 	Node* quad_root = nullptr;
+	double theta = 0.3; //lower values for higher accuracy (0 for brute force)
 
-	Physics(double step);
+	Physics(sf::Vector2u resolution);
 
 	sf::Vector2f scale(sf::Vector2f, double scalar);
 

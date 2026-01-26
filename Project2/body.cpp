@@ -10,5 +10,10 @@ Body::Body(double radius, double mass, sf::Vector2f position, sf::Vector2f veloc
 
 	this->shape.setRadius(this->radius);
 	this->shape.setFillColor(this->color);
-	this->shape.setPosition(this->position);
+	this->shape.setPosition(sf::Vector2f(this->position.x-radius, this->position.y-radius));
 }
+
+void Body::set_position(sf::Vector2f new_pos) {
+	this->shape.setPosition(sf::Vector2f(new_pos.x - this->radius, new_pos.y - this->radius));
+}
+

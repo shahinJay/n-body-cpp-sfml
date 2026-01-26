@@ -42,17 +42,15 @@ void spawn_random(std::vector<Body>& bodies, int amount) {
 }
 
 void spawn_solar_system(Physics& phy, std::vector<Body>& bodies, int planets) {
+	double central_mass = 1.9e17;
+	double central_radius = 20.0;
+	sf::Vector2f center_pos = sf::Vector2f(450+central_radius, 450+central_radius);
 
-	sf::Vector2f center_pos = sf::Vector2f(350.0, 350.0);
-	
-
-	double central_mass = 3e7;
-	double central_radius = 24.0;
 
 	double radius, mass;
-	double mass_range_lower = 5.0;
-	double mass_range_upper = 10.0;
-	double radius_scale_factor =5; // lower = bigger in scale
+	double mass_range_lower = 2e5;
+	double mass_range_upper = 3e5;
+	double radius_scale_factor =3e5; // lower = bigger in scale
 	double red;
 	double blue;
 	double green;
@@ -67,16 +65,16 @@ void spawn_solar_system(Physics& phy, std::vector<Body>& bodies, int planets) {
 	{
 		mass = random_range(mass_range_lower, mass_range_upper);
 		radius = mass / radius_scale_factor;
-
-		position.x = random_range(0, 800);
-		position.y = random_range(0, 800);
-
-		//red = random_range(5, 255);
-		//green = random_range(5, 255);
-		//blue = random_range(5, 255);
+		position.x = random_range(0, 1000);
+		position.y = random_range(0, 1000);
 		
-		//color = sf::Color(red, green, blue);
-		color = sf::Color::White;
+
+		red = random_range(200, 255);
+		green = random_range(200, 255);
+		blue = random_range(200, 255);
+		
+		color = sf::Color(red, green, blue);
+		//color = sf::Color::White;
 		
 		velocity = phy.apply_circular_velocity(center_pos, central_mass, position);
 
@@ -86,17 +84,19 @@ void spawn_solar_system(Physics& phy, std::vector<Body>& bodies, int planets) {
 	}
 }
 
-
 int main() {
-	sf::RenderWindow window(sf::VideoMode({ 800,800 }), "my window");
+	sf::Vector2u resolution = sf::Vector2u(1000, 1000);
+	sf::RenderWindow window(sf::VideoMode(resolution), "n body sim");
 	sf::Clock deltaclock;
 	double delta = 0.001;
 
-	Physics phy(0.00002);
+	int particles = 800; //number of particles
+
+	Physics phy(resolution);
 	std::vector<Body> bodies;
 
-	spawn_random(bodies, 8000);
-	//spawn_solar_system(phy, bodies, 7000);
+	//spawn_random(bodies, particles);
+	spawn_solar_system(phy, bodies, particles);
 
 	while (window.isOpen())
 	{
@@ -117,6 +117,6 @@ int main() {
 
 		window.display();
 		delta = deltaclock.getElapsedTime().asSeconds();
-		std::cout << 1/delta << std::endl;
+		//std::cout << 1/delta << std::endl;
 	}
 }

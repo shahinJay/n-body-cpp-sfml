@@ -60,14 +60,12 @@ void Node::split_and_insert(Body& body) {
 				if (this->nw == nullptr)
 					this->nw = new Node(nw_pos, new_hw, sf::Vector2f(0,0), 0); //create node object
 				this->nw->insert(body); //insert body into node object
-				this->nw->self_body = &body; //define contained body
 			}
 			// north - east
 			else {
 				if (this->ne == nullptr)
 					this->ne = new Node(ne_pos, new_hw, sf::Vector2f(0,0),0); //create node object
 				this->ne->insert(body); //insert body into node object
-				this->ne->self_body = &body; //define contained body
 				
 			}
 		}
@@ -79,14 +77,12 @@ void Node::split_and_insert(Body& body) {
 				if (this->sw == nullptr)
 					this->sw = new Node(sw_pos, new_hw, sf::Vector2f(0, 0), 0); //create node object
 				this->sw->insert(body); //insert body into node object
-				this->sw->self_body = &body; //define contained body
 			}
 			// south - east
 			else {
 				if (this->se == nullptr)
 					this->se = new Node(se_pos, new_hw, sf::Vector2f(0, 0), 0); //creat node object
 				this->se->insert(body); //insert body into node object
-				this->se->self_body = &body; //define contained body
 			}
 		}
 	}

@@ -10,8 +10,10 @@
 
 //PHYSICS CLASS IMPLEMENTATION
 
-Physics::Physics(double step) {
-	this->step = step;
+Physics::Physics(sf::Vector2u resolution) {
+	this->step = 0.001;
+	this->resolution = resolution;
+	std::cout << resolution.x / 2 << std::endl;
 }
 
 sf::Vector2f Physics::scale(sf::Vector2f vec, double scalar) {
@@ -100,20 +102,18 @@ void Physics::apply_gravity(Body& b, sf::Vector2f b2pos, double mass, double dis
 	this->accel.y = (dir(b.position, b2pos).y * this->G * mass) / ((dist * dist) + softening_factor);
 	
 	b.velocity += scale(this->accel, delta);//velocity update
-	
 }
 
 void Physics::traverse_quadtree(Body& b, Node& curr, double delta) {
 	
 	if (curr.self_body == &b ) return;
-	
 
 	double s = 2 * curr.half_width;
 	double d = distance(b.position, curr.c_o_m);
 
 	if (d == 0) return;
 	
-	if (curr.is_leaf || s/d <0.5) {
+	if (curr.is_leaf || s/d < this->theta) {
 		
 		apply_gravity(b, curr.c_o_m, curr.mass, d, delta);
 	}
@@ -127,7 +127,7 @@ void Physics::traverse_quadtree(Body& b, Node& curr, double delta) {
 
 void Physics::apply_barnes_hut(std::vector<Body>& bodies, double delta) {
 	delete this->quad_root;
-	this->quad_root = new Node(sf::Vector2(0.f,0.f), 400, sf::Vector2f(400.f,400.f),0);
+	this->quad_root = new Node(sf::Vector2(0.f,0.f), this->resolution.x/2, sf::Vector2f(0,0),0);
 
 	for (Body& b : bodies) {
 		quad_root->insert(b);
@@ -137,7 +137,9 @@ void Physics::apply_barnes_hut(std::vector<Body>& bodies, double delta) {
 		traverse_quadtree(b, curr, delta);
 		
 		b.position += scale(b.velocity, delta); //position update
-		b.shape.setPosition(b.position);// setting position
+		//b.shape.setPosition(b.position);// setting position
+		b.set_position(b.position);
+		
 	}
 }
 
@@ -145,6 +147,7 @@ void Physics::apply_arcade_gravity(std::vector<Body>& bodies, int ground) {
 	double accel;
 	for (Body& b : bodies) {
 		accel = this->G / ((b.position.y - ground) * (b.position.y - ground));
+
 		if (b.position.y < ground && b.velocity.y < 1000) {
 			b.velocity.y += accel * this->step;
 			b.position.y += b.velocity.y * this->step;
