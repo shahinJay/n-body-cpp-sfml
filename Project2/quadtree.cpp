@@ -18,6 +18,10 @@ Node::Node(sf::Vector2f position, double hw, sf::Vector2f c_o_m, double mass) {
 	this->mass = mass;
 }
 
+sf::Vector2f Node::scale(sf::Vector2f vec, double scalar) {
+	return sf::Vector2f(vec.x * scalar, vec.y * scalar);
+}
+
 bool Node::within_bounds(sf::Vector2f position) {
 	if (position.x > this->position.x && position.x < this->position.x + this->half_width*2 && position.y > this->position.y && position.y < this->position.y + this->half_width*2)
 		return true;
@@ -54,14 +58,14 @@ void Node::split_and_insert(Body& body) {
 			// north - west
 			if (position.x < mid_x) {
 				if (this->nw == nullptr)
-					this->nw = new Node(nw_pos, new_hw, c_o_m, mass); //create node object
+					this->nw = new Node(nw_pos, new_hw, sf::Vector2f(0,0), 0); //create node object
 				this->nw->insert(body); //insert body into node object
 				this->nw->self_body = &body; //define contained body
 			}
 			// north - east
 			else {
 				if (this->ne == nullptr)
-					this->ne = new Node(ne_pos, new_hw, c_o_m, mass); //create node object
+					this->ne = new Node(ne_pos, new_hw, sf::Vector2f(0,0),0); //create node object
 				this->ne->insert(body); //insert body into node object
 				this->ne->self_body = &body; //define contained body
 				
@@ -73,14 +77,14 @@ void Node::split_and_insert(Body& body) {
 			// south - west
 			if (position.x < mid_x) {
 				if (this->sw == nullptr)
-					this->sw = new Node(sw_pos, new_hw, c_o_m, mass); //create node object
+					this->sw = new Node(sw_pos, new_hw, sf::Vector2f(0, 0), 0); //create node object
 				this->sw->insert(body); //insert body into node object
 				this->sw->self_body = &body; //define contained body
 			}
 			// south - east
 			else {
 				if (this->se == nullptr)
-					this->se = new Node(se_pos, new_hw, c_o_m, mass); //creat node object
+					this->se = new Node(se_pos, new_hw, sf::Vector2f(0, 0), 0); //creat node object
 				this->se->insert(body); //insert body into node object
 				this->se->self_body = &body; //define contained body
 			}
@@ -91,14 +95,14 @@ void Node::split_and_insert(Body& body) {
 
 void Node::insert(Body& body) {
 	double total_m = this->mass + body.mass;
-
-	//fix vector multiplication
-
-	this->c_o_m = ((this->c_o_m * this->position * (float)this->mass ) + (body.position * (float)body.mass)) / total_m;
 	
+	this->c_o_m = scale(scale(this->c_o_m, this->mass) + scale(body.position, body.mass) , 1/total_m);
+	this->mass = total_m;
+
 	if (this->is_leaf && this->contains==0) {//is leaf and is empty
-		this->is_leaf = false;
-		split_and_insert(body);
+		
+		this->self_body = &body;	
+		this->contains += 1;
 		
 	}
 	else if (is_leaf && this->contains == 1) {//is leaf and is NOT empty
