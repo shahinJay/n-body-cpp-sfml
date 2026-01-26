@@ -34,4 +34,5 @@ I am moving away from high-level engines like **Godot** to understand the "essen
 ### 5000 particles at 60 FPS (using Barnes-Hut Algorithm)
 ![5000system](https://github.com/user-attachments/assets/e4ec0988-67af-4f4c-9232-bc58d2e5e75b)
 
-
+### 8000 particles at 60 FPS 
+![0118(2)](https://github.com/user-attachments/assets/3fa3c565-1b3b-45b8-bed2-d89b666f9bc6)
