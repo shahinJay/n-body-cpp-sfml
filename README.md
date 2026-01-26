@@ -19,6 +19,10 @@
 * **Physics:** Numerical Integration (Euler/Verlet)
 
 ---
+### The Math
+* Simulating a relatively low number of particles can be done by using a brute-force approach, by doing pair-wise calculation for every object against every other object. However, this approach is not optimal when scaled as it has a time complexity of **O(n^2)**.
+* The alternate approach is to use an algorithm like **Barnes-Hut** by using **QuadTree** data structures to recursively keep objects in nodes relative to their position in space, and then approximating distant particles into one body (or a center of mass) and then applying required forces.
+* This approach significanly increases performance as it has a time complexity of **O(n log n)** , n for each body, and log n for rebuilding the quadtree.
 
 ### The Vision
 I am moving away from high-level engines like **Godot** to understand the "essence" of physics simulations at the hardware level. This project focuses on building a custom engine from scratch, handling everything from vector math to memory-efficient rendering.
