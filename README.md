@@ -1,12 +1,13 @@
-### N-Body Sim (C++/SFML)
+# N-Body Sim (C++/SFML)
 
-> **Transitioning a custom physics engine from CLI to 2D Graphics.**
+> **Building a custom 2d physics engine that can simulate n body gravity for thousands of particles**
+> **Using Barnes-Hut Algortithm and Quadtree data structures for optimization**
 
 ---
 ### Goals
 - ✅ **Logic Prototype:** Functional 1D console sim with gravity classes.
 - ✅ **2D Rendering:** Migrating to SFML for real-time visualization.
-- ☐ **Optimization:** Optimizing to handle a reasonably large number of particles.
+- ✅ **Optimization:** Optimizing to handle a reasonably large number of particles.
 
 ---
 ### Tech Stack
