@@ -35,7 +35,7 @@ class Node {
 		Node* sw = nullptr;
 
 
-
+	sf::Vector2f scale(sf::Vector2f vec, double scalar);
 	bool within_bounds(sf::Vector2f position);
 	void split_and_insert(Body& body);
 

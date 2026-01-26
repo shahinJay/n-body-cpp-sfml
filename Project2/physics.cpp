@@ -98,31 +98,26 @@ void Physics::apply_brute_force_gravity(std::vector<Body>& bodies, bool apply_bo
 void Physics::apply_gravity(Body& b, sf::Vector2f b2pos, double mass, double dist, double delta) {
 	this->accel.x = (dir(b.position, b2pos).x * this->G * mass) / ((dist * dist) + softening_factor);
 	this->accel.y = (dir(b.position, b2pos).y * this->G * mass) / ((dist * dist) + softening_factor);
-
+	
 	b.velocity += scale(this->accel, delta);//velocity update
 	
 }
 
 void Physics::traverse_quadtree(Body& b, Node& curr, double delta) {
-	if (curr.self_body == &b) return;
-
-	double mass;
-	sf::Vector2f c_o_m;
+	
+	if (curr.self_body == &b ) return;
+	
 
 	double s = 2 * curr.half_width;
 	double d = distance(b.position, curr.c_o_m);
 
-	if (curr.contains == 1) {
-		mass = curr.mass;
-		c_o_m = curr.c_o_m;
-		apply_gravity(b, c_o_m, mass, d, delta);
+	if (d == 0) return;
+	
+	if (curr.is_leaf || s/d <0.5) {
+		
+		apply_gravity(b, curr.c_o_m, curr.mass, d, delta);
 	}
-	else if (curr.contains == 0 && s/d  < 0.5) {
-		mass = curr.mass;
-		c_o_m = curr.c_o_m;
-		apply_gravity(b, c_o_m, mass, d, delta);
-	}
-	else if (curr.contains == 0 && s / d > 0.5){
+	else{
 		if (curr.nw) traverse_quadtree(b, *curr.nw, delta);
 		if (curr.ne) traverse_quadtree(b, *curr.ne, delta);
 		if (curr.sw) traverse_quadtree(b, *curr.sw, delta);
@@ -132,13 +127,15 @@ void Physics::traverse_quadtree(Body& b, Node& curr, double delta) {
 
 void Physics::apply_barnes_hut(std::vector<Body>& bodies, double delta) {
 	delete this->quad_root;
-	this->quad_root = new Node();
+	this->quad_root = new Node(sf::Vector2(0.f,0.f), 400, sf::Vector2f(400.f,400.f),0);
+
 	for (Body& b : bodies) {
 		quad_root->insert(b);
 	}
 	Node& curr = *this->quad_root;
 	for (Body& b : bodies) {
 		traverse_quadtree(b, curr, delta);
+		
 		b.position += scale(b.velocity, delta); //position update
 		b.shape.setPosition(b.position);// setting position
 	}

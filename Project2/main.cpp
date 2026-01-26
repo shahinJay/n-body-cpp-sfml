@@ -17,9 +17,9 @@ double random_range(double lower, double upper) {
 
 void spawn_random(std::vector<Body>& bodies, int amount) {
 	double radius, mass;
-	double mass_range_lower = 2e2;
-	double mass_range_upper = 3e3;
-	double radius_scale_factor = 1e-2; // lower = bigger in scale
+	double mass_range_lower = 2e4;
+	double mass_range_upper = 3e4;
+	double radius_scale_factor = 2e4; // lower = bigger in scale
 	double velocity_range = 10;
 	sf::Vector2f position, velocity;//fix this
 	sf::Color color = sf::Color::White;
@@ -52,7 +52,7 @@ void spawn_solar_system(Physics& phy, std::vector<Body>& bodies, int planets) {
 	double radius, mass;
 	double mass_range_lower = 5.0;
 	double mass_range_upper = 10.0;
-	double radius_scale_factor =2; // lower = bigger in scale
+	double radius_scale_factor =5; // lower = bigger in scale
 	double red;
 	double blue;
 	double green;
@@ -71,14 +71,12 @@ void spawn_solar_system(Physics& phy, std::vector<Body>& bodies, int planets) {
 		position.x = random_range(0, 800);
 		position.y = random_range(0, 800);
 
-		red = random_range(5, 255);
-		green = random_range(5, 255);
-		blue = random_range(5, 255);
+		//red = random_range(5, 255);
+		//green = random_range(5, 255);
+		//blue = random_range(5, 255);
 		
-		color = sf::Color(red, green, blue);
-		//color = sf::Color::White;
-
-		
+		//color = sf::Color(red, green, blue);
+		color = sf::Color::White;
 		
 		velocity = phy.apply_circular_velocity(center_pos, central_mass, position);
 
@@ -97,8 +95,8 @@ int main() {
 	Physics phy(0.00002);
 	std::vector<Body> bodies;
 
-	//spawn_random(bodies, 10);
-	spawn_solar_system(phy, bodies, 50);
+	spawn_random(bodies, 8000);
+	//spawn_solar_system(phy, bodies, 7000);
 
 	while (window.isOpen())
 	{
@@ -119,6 +117,6 @@ int main() {
 
 		window.display();
 		delta = deltaclock.getElapsedTime().asSeconds();
-
+		std::cout << 1/delta << std::endl;
 	}
 }
