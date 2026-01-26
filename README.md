@@ -1,4 +1,4 @@
-# N-Body Sim (C++/SFML)
+### N-Body Sim (C++/SFML)
 
 > **Transitioning a custom physics engine from CLI to 2D Graphics.**
 
@@ -30,5 +30,8 @@ I am moving away from high-level engines like **Godot** to understand the "essen
 
 ### Solar System Simulation with Elastic Collisions
 ![0118](https://github.com/user-attachments/assets/bba48145-292d-40de-ae25-71e46dac87ac)
+
+### 5000 particles at 60 FPS (using Barnes-Hut Algorithm)
+![5000system](https://github.com/user-attachments/assets/e4ec0988-67af-4f4c-9232-bc58d2e5e75b)
 
 
